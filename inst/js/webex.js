@@ -1,5 +1,3 @@
-<script>
-
 /* update total correct if #total_correct exists */
 update_total_correct = function() {
   if (t = document.getElementById("total_correct")) {
@@ -12,10 +10,10 @@ update_total_correct = function() {
 /* solution button toggling function */
 b_func = function() {
   var cl = this.parentElement.classList;
-  if (cl.contains('open')) {
-    cl.remove("open");
-  } else {
+  if (!cl.contains('open')) {
     cl.add("open");
+    // hide the button
+    this.parentNode.removeChild(this);
   }
 }
 
@@ -24,18 +22,41 @@ solveme_func = function(e) {
   var real_answers = JSON.parse(this.dataset.answer);
   var my_answer = this.value;
   var cl = this.classList;
+  var answerbox = this.nextSibling;
+
   if (cl.contains("ignorecase")) {
     my_answer = my_answer.toLowerCase();
   }
   if (cl.contains("nospaces")) {
     my_answer = my_answer.replace(/ /g, "");
   }
+
+  if (cl.contains("calculator") & my_answer != "") {
+  try {
+      evalled_answer = String(eval(my_answer));
+      if (my_answer != evalled_answer){
+        var evalled = true;  
+      }
+      my_answer = evalled_answer;
+    }
+    catch(error) {
+      var evalled = false;
+      //leave answer string alone if it fails eval
+    }
+    if (evalled){
+      // XXX todo round the number to this.dataset.digits at this point
+      answerbox.innerHTML = " = " + my_answer;
+    } else {
+      answerbox.innerHTML = "";
+    }
+  }
+  
   
   if (my_answer !== "" & real_answers.includes(my_answer)) {
-    cl.add("correct");
-  } else {
-    cl.remove("correct");
-  }
+      cl.add("correct");
+    } else {
+      cl.remove("correct");
+  }  
 
   // match numeric answers within a specified tolerance
   if(this.dataset.tol){
@@ -53,9 +74,8 @@ solveme_func = function(e) {
     answer_regex = RegExp(real_answers.join("|"))
     if (answer_regex.test(my_answer)) {
       cl.add("correct");
-    }  
+    } 
   }
-  
   update_total_correct();
 }
 
@@ -98,5 +118,3 @@ window.onload = function() {
   
   update_total_correct();
 }
-
-</script>

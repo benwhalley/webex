@@ -1,19 +1,37 @@
+#' Create an engine to allow block-style hints: like ```{hint} button text / hint text
+#' The first line of the block is used as the button text, all other lines are rendered 
+#' as markdown and included in the hidden-by-default div
+#' @export
+eng_hint = function(options) {
+  button <- paste0("<button>", knitr::knit(textConnection(options$code[1])), "</button>", collapse = "\n")
+  hint <- knitr::knit(textConnection(paste(c(options$code[-1], "\n\n"))))
+  paste(c("<div class='solution'>",
+          button, hint, "</div>"),
+        collapse = '\n')
+}
+
 #' Create fill-in-the-blank question
 #'
 #' @param answer The correct answer
 #' @param width Width of the input box in characters. Defaults to the length of the longest answer.
 #' @param num whether the input is numeric, in which case allow for leading zeroes to be omitted
+#' @param calculator whether the input should be eval'd in the local javascript environment. Defaults to `num``
+#' @param calculator_digits number significant digits to show
 #' @param tol the tolerance within which numeric answers will be accepts; i.e. (response - true.answer) < tol = a correct response. Implies num=TRUE
 #' @param ignore_case Whether to ignore case (capitalization)
 #' @param ignore_ws Whether to ignore white space
 #' @param regex Whether to use regex to match answers (concatenates all answers with `|` before matching)
 #' @details Writes html code that creates an input box widget. Call this function inline in an RMarkdown document. See the Web Exercises RMarkdown template for examples.
 #' @export
-fitb <- function(answer, width = calculated_width, 
+fitb <- function(answer, 
+                 width = calculated_width, 
                  num = FALSE,
-                 ignore_case = FALSE,
                  tol=NULL,
-                 ignore_ws = TRUE, regex=FALSE) {
+                 calculator = num,
+                 calculator_digits = 4,
+                 ignore_case = FALSE,
+                 ignore_ws = TRUE, 
+                 regex=FALSE) {
   
   
   if(!is.null(tol)){
@@ -25,19 +43,30 @@ fitb <- function(answer, width = calculated_width,
     answer <- union(answer, answer2)
   }
   
-  # if width not set, calculate it from max length answer, up to limit of 100
-  calculated_width <- min(100, max(purrr::map_int(answer, nchar)))
-  
+  # if width not set, calculate it from max length answer, up to limit of 100. 
+  # Add 6 spaces if calculation =TRUE to allow space to enter calculations
+  calculated_width <- max(2, min(100, max(purrr::map_int(answer, nchar))))
+  qid <-  round(runif(1, 0, 10^6))
   answers <- jsonlite::toJSON(as.character(answer))
-  paste0("<input class='solveme",
+  paste0(
+    "<span class='webex-fitb' id = 'Q", qid ,"' >",
+    "<input ",
+    "class='solveme ",
          ifelse(ignore_ws, " nospaces", ""),
-         ifelse(!is.null(tol), paste0("' data-tol='", tol, ""), ""),
          ifelse(ignore_case, " ignorecase", ""),
-         ifelse(regex, " regex", ""),
-         "' size='", width,
-         "' data-answer='", answers, "'/>")
+         ifelse(calculator, " calculator", ""),
+         ifelse(regex, " regex ", ""),
+    "'", 
+    ifelse(!is.null(tol), paste0(" data-tol=", tol, ""), ""),
+    paste0(" data-digits=", calculator_digits, ""),
+          " size=", width, " ",
+          " style='width:", width, "em;' ",
+         " data-answer='", answers, "'/>",
+         "<span class='solvedme'></span>",
+    "</span>"
+         )
 }
-
+fitb(answer=2)
 #' Create multiple choice question
 #'
 #' @param opts Vector of alternatives. The correct answer is the element(s) of this vector named 'answer'. See the Web Exercises RMarkdown template for examples.
@@ -112,3 +141,7 @@ round2 = function(x, digits = 0) {
 strip_lzero <- function(x) {
   sub("^([+-]*)0\\.", "\\1.", x)
 }
+
+
+
+
