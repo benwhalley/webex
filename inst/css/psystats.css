@@ -35,7 +35,6 @@ li code {
 
 
 .tip { 
-  
   margin-top:3em;
   margin-bottom:3em;
   padding: 2em;
@@ -53,3 +52,22 @@ h4 { margin-top: 1em;}
 pre + p { margin-top: 3em; }
 
 .sourceCode{margin-bottom:0;}
+
+
+
+
+.aside {
+ 	text-decoration: none;
+ }
+
+ .tangent { 
+ 	display: none;
+ 	padding:1em;
+ 	border: 1px solid #ccc;
+ 	border-radius: 4px;
+ 	background-color: #e1f5fe;
+ 	width: 18em;
+ 	margin-left:-20em;
+ 	position: absolute;
+ }
+
