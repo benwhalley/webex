@@ -1,10 +1,13 @@
-#' Convert to an HTML document
+#' Knitr function to convert to an HTML document
 #' 
 #' Format for converting from R Markdown to an HTML document including classroom exercises.
 #' Basically just adds dependencies to rmdformats::html_clean
 #'
 #' @export
-html_clean <- function(...) {
+html_clean <- function(..., 
+                       lightbox = FALSE,
+                       thumbnails = FALSE,
+                       gallery = FALSE) {
   
   extra_dependencies <- list(
     htmltools::htmlDependency(name = "webex",
@@ -26,6 +29,10 @@ html_clean <- function(...) {
   )
   
   html_document_args <- append(html_document_args, extra_args)
+  
+  html_document_args['lightbox'] <- lightbox
+  html_document_args['thumbnails'] <- thumbnails
+  html_document_args['gallery'] <- gallery
   
   do.call(rmdformats::html_clean, html_document_args)
   

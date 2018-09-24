@@ -1,3 +1,23 @@
+body {
+	font-family: 'Garamond', 'Palatino', 'Georgia', serif;
+	font-size: 16pt;
+}
+
+
+#toc {
+	font-size: 12pt;
+	line-height: 1.05em;
+}
+
+
+p code {
+	font-size: 80%;
+}
+
+li code {
+	font-size: 80%;
+}
+
 .exercise { 
   margin-top:3em;
   margin-bottom:3em;
@@ -7,20 +27,23 @@
   background-color: #e1f5fe;
 }
 
-.aside {
-	text-decoration: none;
+
+.exercise p {
+	margin-bottom: 1em;
 }
 
-.tangent { 
-	display: none;
-	padding:1em;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	background-color: #e1f5fe;
-	width: 18em;
-	margin-left:-20em;
-	position: absolute;
+
+
+.tip { 
+  
+  margin-top:3em;
+  margin-bottom:3em;
+  padding: 2em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #c8e6c9;
 }
+
 
 h1 { margin-top: 1.5em;}
 h2 { margin-top: 1.5em;}
