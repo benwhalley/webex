@@ -47,6 +47,21 @@ button code {
   background-color: #c8e6c9;
 }
 
+
+.direction {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding-top: .5em;
+  border: 2px dashed #aaa;
+  border-radius: 4px;
+  font-family:  "Helvetica Neue Light",Helvetica,Arial,sans-serif;
+  font-size:80%;
+}
+
+.direction > ul {
+  list-style-type: circle;
+}
+
 h1.title {
   font-weight: bold;
 }
