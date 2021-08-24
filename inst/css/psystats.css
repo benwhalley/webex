@@ -47,15 +47,17 @@ button code {
   background-color: #c8e6c9;
 }
 
-
 .direction {
   margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  padding-top: .5em;
+  margin-bottom: 2em;
+  padding-top: 0.5em;
   border: 2px dashed #aaa;
   border-radius: 4px;
-  font-family:  "Helvetica Neue Light",Helvetica,Arial,sans-serif;
-  font-size:80%;
+  font-family: "Helvetica Neue Light", Helvetica, Arial, sans-serif;
+  font-size: 80%;
+  width: 50%;
+  margin-left: 48%;
+  display: inline-block;
 }
 
 .direction > ul {
@@ -70,13 +72,13 @@ h1 {
   margin-top: 1.5em;
 }
 h2 {
-  margin-top: 1.5em;
+  margin-top: 2em;
 }
 h3 {
-  margin-top: 1em;
+  margin-top: 3em;
 }
 h4 {
-  margin-top: 1em;
+  margin-top: 3em;
 }
 
 .exercise h1,
@@ -92,7 +94,7 @@ pre + p {
 
 .sourceCode {
   margin-bottom: 0;
-  font-size:.9em ;
+  font-size: 0.9em;
 }
 
 div .sourceCode {
@@ -124,7 +126,17 @@ i.glyphicon.glyphicon-info-sign {
   vertical-align: super;
 }
 
+iframe {
+  margin-bottom: 2em;
+}
 
-
-
-iframe { margin-bottom: 2em;}
+h1::before,
+h2::before,
+.exercise::before {
+  display: block;
+  content: " ";
+  margin-top: -100px;
+  height: 100px;
+  visibility: hidden;
+  pointer-events: none;
+}
