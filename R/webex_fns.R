@@ -3,7 +3,7 @@
 #' as markdown and included in the hidden-by-default div
 #' @export
 eng_hint = function(options) {
-  button <- paste0("<button>", knitr::knit(textConnection(options$code[1])), "</button>", collapse = "\n")
+  button <- paste0("<button class='solution-button'>", knitr::knit(textConnection(options$code[1])), "</button>", collapse = "\n")
   hint <- knitr::knit(textConnection(paste(c(options$code[-1], "\n\n"))))
   paste(c("<div class='solution'>",
           button, hint, "</div>"),
@@ -99,6 +99,43 @@ torf <- function(answer) {
   mcq(opts)
 }
 
+#' Create a modal with hint content
+modal_template <- '
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{modalid}">
+{label}
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="{modalid}" tabindex="-1" role="dialog" aria-labelledby="{modalid}Label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- 
+      <div class="modal-header">
+        <h5 class="modal-title" id="{modalid}Label">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    -->
+      <div class="modal-body">
+{tip}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+'
+
+
+quicktip <- function(label="Show tips", tip = "TIP TEXT HERE") {
+  whisker::whisker.render(modal_template, list(tip=tip, modalid=runif(1, 1, 1e7)) )
+}
+quicktip()
+
+
 #' Create button revealing hidden HTML content
 #'
 #' @param button_text Text to appear on the button that reveals the hidden content
@@ -106,7 +143,7 @@ torf <- function(answer) {
 #' @details Writes HTML to create a content that is revealed by a button press. Call this function inline in an RMarkdown document. Any content appearing after this call up to an inline call to \code{unhide()} will only be revealed when the user clicks the button. See the Web Exercises RMarkdown Template for examples.
 #' @export
 hide <- function(button_text = "Solution") {
-  paste0("\n<div class='solution'><button>", button_text, "</button>\n")
+  paste0("\n<div class='solution'><button class='solution-button'>", button_text, "</button>\n")
 }
 
 #' End hidden HTML content
@@ -141,6 +178,7 @@ round2 = function(x, digits = 0) {
 strip_lzero <- function(x) {
   sub("^([+-]*)0\\.", "\\1.", x)
 }
+
 
 
 

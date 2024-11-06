@@ -2,9 +2,10 @@
 % Please edit documentation in R/webex_clean.R
 \name{html_clean}
 \alias{html_clean}
-\title{Convert to an HTML document}
+\title{Knitr function to convert to an HTML document}
 \usage{
-html_clean(...)
+html_clean(..., lightbox = FALSE, thumbnails = FALSE,
+  gallery = FALSE)
 }
 \description{
 Format for converting from R Markdown to an HTML document including classroom exercises.
